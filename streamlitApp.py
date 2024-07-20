@@ -22,49 +22,51 @@ with st.form("user_input"):
     speech_to_text_html = open("utils/speech_to_text.html", "r").read()
     st.components.v1.html(speech_to_text_html, height=300)
 
-    question_audio = get_audio_ques(speech_to_text_html)
-
     result_as_text = st.checkbox("Want reply as text also")
 
     button = st.form_submit_button("Generate Reply")
 
-    if button and resume is not None and (question_audio or question_text) and role and round:
-        with st.spinner("Loading..."):
-            try:
-                information = read_file(resume)
+    if button:
 
-                question = question_audio if question_audio else question_text
+        question_audio = get_audio_ques(speech_to_text_html)
 
-                response = generate_evaluate_chain({
-                    "question": question,
-                    "job_role": role,
-                    "interview_stage": round,
-                    "applicant_info": information
-                })
+        if resume is not None and (question_audio or question_text) and role and round:
+            with st.spinner("Loading..."):
+                try:
+                    information = read_file(resume)
 
-                result = response.get('generated_reply')
+                    question = question_audio if question_audio else question_text
 
-                # Convert text to audio
-                tts = gTTS(result)
-                audio_file = "response.mp3"
-                tts.save(audio_file)
+                    response = generate_evaluate_chain({
+                        "question": question,
+                        "job_role": role,
+                        "interview_stage": round,
+                        "applicant_info": information
+                    })
 
-                # Display audio player with autoplay
-                audio_html = f"""
-                <audio controls autoplay>
-                    <source src="data:audio/mpeg;base64,{base64.b64encode(open(audio_file, "rb").read()).decode()}" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-                """
-                st.components.v1.html(audio_html, height=100)
+                    result = response.get('generated_reply')
 
-                if result_as_text:
-                    st.markdown(result)
+                    # Convert text to audio
+                    tts = gTTS(result)
+                    audio_file = "response.mp3"
+                    tts.save(audio_file)
 
-                st.balloons()
+                    # Display audio player with autoplay
+                    audio_html = f"""
+                    <audio controls autoplay>
+                        <source src="data:audio/mpeg;base64,{base64.b64encode(open(audio_file, "rb").read()).decode()}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                    """
+                    st.components.v1.html(audio_html, height=100)
 
-            except Exception as e:
-                st.error(f"Error: {e}")
+                    if result_as_text:
+                        st.markdown(result)
 
-    elif button:
-        st.write("Enter all details")
+                    st.balloons()
+
+                except Exception as e:
+                    st.error(f"Error: {e}")
+
+        else:
+            st.write("Enter all details")
