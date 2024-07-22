@@ -1,10 +1,23 @@
 import streamlit as st
 from gtts import gTTS
-import os
 import base64
+import requests
 from src.interviewhelper.utils import read_file
 from src.interviewhelper.interviewhelper import generate_evaluate_chain
-from utils.HelperFunctions import get_audio_ques
+import os
+
+def fetch_transcript():
+    try:
+        response = requests.get('http://localhost:5000/transcript')
+        st.write(response)
+        if response.status_code == 200:
+            return response.text
+        else:
+            st.error('Error fetching transcript from server')
+            return None
+    except Exception as e:
+        st.error(f'Error: {e}')
+        return None
 
 st.title("Interview Helper")
 
@@ -27,16 +40,19 @@ with st.form("user_input"):
     button = st.form_submit_button("Generate Reply")
 
     if button:
+        # Fetch the transcript from the Flask server
+        question_audio = fetch_transcript()
 
-        question_audio = get_audio_ques(speech_to_text_html)
+        # Use the question_text if question_audio is not available
+        question = question_audio if question_audio else question_text
 
-        if resume is not None and (question_audio or question_text) and role and round:
+        if resume is not None and (question or question_text) and role and round:
             with st.spinner("Loading..."):
                 try:
+                    # Read the resume file
                     information = read_file(resume)
 
-                    question = question_audio if question_audio else question_text
-
+                    # Generate response using the provided details
                     response = generate_evaluate_chain({
                         "question": question,
                         "job_role": role,

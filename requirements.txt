@@ -4,6 +4,8 @@ python-dotenv
 langchain_google_genai
 langchain
 PyPDF2
+beautifulsoup4
+requests
 
 
 -e .

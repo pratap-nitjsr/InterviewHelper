@@ -3,9 +3,11 @@
 <head>
   <title>Speech to Text</title>
   <style>
-    body{
-      background-color: black ;
+    body {
+      height: 100vh;
+      background-color: black;
       color: white;
+      border: 3px solid red;
     }
   </style>
 </head>
@@ -31,9 +33,20 @@
       recognition.onresult = function(event) {
         const transcript = event.results[event.results.length - 1][0].transcript;
         transcriptElement.innerText = transcript;
+      };
 
-        // Send the transcript to Streamlit
-        Streamlit.setComponentValue(transcript);
+      recognition.onend = function() {
+        const transcript = transcriptElement.innerText;
+        fetch('http://localhost:5000/save_transcript', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ transcript: transcript })
+        })
+        .then(response => response.json())
+        .then(data => console.log('Transcript saved successfully:', data))
+        .catch(error => console.error('Error saving transcript:', error));
       };
     }
 
