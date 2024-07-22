@@ -13,7 +13,7 @@ def save_transcript():
     print("Check1")
     if transcript:
         print(transcript)
-        with open('transcript.txt', 'w') as file:
+        with open('/tmp/transcript.txt', 'w') as file:
             file.write(transcript)
         return jsonify({'status': 'success', 'message': 'Transcript saved successfully.'}), 200
     return jsonify({'status': 'error', 'message': 'No transcript data provided.'}), 400
@@ -23,7 +23,7 @@ def get_transcript():
     try:
         if (os.path.exists('transcript.txt')):
             print("Hello")
-        return send_file('transcript.txt', as_attachment=True)
+        return send_file('/tmp/transcript.txt', as_attachment=True)
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
