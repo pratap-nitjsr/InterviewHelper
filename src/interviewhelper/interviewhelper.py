@@ -27,7 +27,7 @@ reply_generation_prompt = PromptTemplate(
     You have provided the following information for this position: {applicant_info}
     This is the {interview_stage} round of the interview.
     Based on the above question, formulate a highly impressive answer.
-    Ensure that the reply is engaging and does not appear AI-generated.
+    Ensure that the reply is engaging, precise and does not appear AI-generated.
     Your response must conatin the reply as a candidate only.
     """
 )
