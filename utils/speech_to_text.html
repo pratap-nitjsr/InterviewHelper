@@ -37,7 +37,7 @@
 
       recognition.onend = function() {
         const transcript = transcriptElement.innerText;
-        fetch('http://localhost:5000/save_transcript', {
+        fetch('https://interview-helper-rho.vercel.app/save_transcript', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
