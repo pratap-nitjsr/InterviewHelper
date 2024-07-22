@@ -8,7 +8,7 @@ import os
 
 def fetch_transcript():
     try:
-        response = requests.get('http://localhost:5000/transcript')
+        response = requests.get('https://interview-helper-rho.vercel.app/transcript')
         st.write(response)
         if response.status_code == 200:
             return response.text
