@@ -9,7 +9,7 @@ import os
 def fetch_transcript():
     try:
         response = requests.get('https://interview-helper-rho.vercel.app/transcript')
-        st.write(response)
+        # st.write(response)
         if response.status_code == 200:
             return response.text
         else:
@@ -41,10 +41,16 @@ with st.form("user_input"):
 
     if button:
         # Fetch the transcript from the Flask server
-        question_audio = fetch_transcript()
+
+        question_audio = None
+
+        try:
+            question_audio = fetch_transcript()
+        except:
+            pass
 
         # Use the question_text if question_audio is not available
-        question = question_audio if question_audio else question_text
+        question = question_audio if question_audio is not None else question_text
 
         if resume is not None and (question or question_text) and role and round:
             with st.spinner("Loading..."):
@@ -77,6 +83,18 @@ with st.form("user_input"):
                     st.components.v1.html(audio_html, height=100)
 
                     if result_as_text:
+
+                        st.code(result)
+
+                        copy_button_html = f"""
+                        <button onclick="navigator.clipboard.writeText('{result}').then(function() {{
+                            console.log('Copied to clipboard');
+                        }}, function(err) {{
+                            console.error('Failed to copy text: ', err);
+                        }});">Copy to Clipboard</button>
+                        """
+                        st.components.v1.html(copy_button_html)
+                        
                         st.markdown(result)
 
                     st.balloons()
