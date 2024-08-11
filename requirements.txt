@@ -1,11 +1,10 @@
-gtts
+gtts==2.5.2
+python-dotenv==1.0.1
+langchain-google-genai==1.0.8
+langchain==0.2.12
+pypdf2==3.0.1
+beautifulsoup4==4.12.3
+requests==2.32.3
 streamlit
-python-dotenv
-langchain_google_genai
-langchain
-PyPDF2
-beautifulsoup4
-requests
-
 
 -e .
