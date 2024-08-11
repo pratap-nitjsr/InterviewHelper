@@ -82,6 +82,15 @@ with st.form("user_input"):
                     """
                     st.components.v1.html(audio_html, height=100)
 
+                    st.markdown("""
+                        <style>
+                        .stCodeBlock code {
+                            white-space: pre-wrap !important;
+                            word-wrap: break-word !important;
+                        }
+                        </style>
+                        """, unsafe_allow_html=True)
+
                     if result_as_text:
 
                         st.code(result, "markdown")
