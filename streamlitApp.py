@@ -84,18 +84,18 @@ with st.form("user_input"):
 
                     if result_as_text:
 
-                        # st.code(result)
+                        st.code(result, "markdown")
 
-                        copy_button_html = f"""
-                        <button onclick="navigator.clipboard.writeText('{result}').then(function() {{
-                            console.log('Copied to clipboard');
-                        }}, function(err) {{
-                            console.error('Failed to copy text: ', err);
-                        }});">Copy to Clipboard</button>
-                        """
-                        st.components.v1.html(copy_button_html)
+                        # copy_button_html = f"""
+                        # <button onclick="navigator.clipboard.writeText('{result}').then(function() {{
+                        #     console.log('Copied to clipboard');
+                        # }}, function(err) {{
+                        #     console.error('Failed to copy text: ', err);
+                        # }});">Copy to Clipboard</button>
+                        # """
+                        # st.components.v1.html(copy_button_html)
                         
-                        st.markdown(result)
+                        # st.markdown(result)
 
                     st.balloons()
 
