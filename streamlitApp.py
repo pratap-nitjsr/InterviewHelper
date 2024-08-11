@@ -84,7 +84,7 @@ with st.form("user_input"):
 
                     if result_as_text:
 
-                        st.code(result)
+                        # st.code(result)
 
                         copy_button_html = f"""
                         <button onclick="navigator.clipboard.writeText('{result}').then(function() {{
